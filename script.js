@@ -9,38 +9,47 @@ let elapsedTime = 0;
 let timerInterval = null;
 let isRunning = false;
 
-function updateDisplay(){
+function updateDisplay() {
     const currentTime = Date.now() - startTime + elapsedTime;
+
     const hours = Math.floor(currentTime / 3600000);
     const minutes = Math.floor((currentTime % 3600000) / 60000);
     const seconds = Math.floor((currentTime % 60000) / 1000);
-    const miliseconds = Math.floor((currentTime % 1000) / 10);
+    const milliseconds = Math.floor((currentTime % 1000) / 10);
 
-    display.textContent = 
-         String(hours).padStart(2,"0")+":"+
-         String(minutes).padStart(2,"0")+":"+
-         String(seconds).padStart(2,"0")+":"+
-         String(miliseconds).padStart(2,"0");
+    display.textContent =
+        String(hours).padStart(2, "0") + ":" +
+        String(minutes).padStart(2, "0") + ":" +
+        String(seconds).padStart(2, "0") + ":" +
+        String(milliseconds).padStart(2, "0");
 }
 
-startPauseBtn.addEventListener("click" , () =>
-{
-    if(!isRunning){
+startPauseBtn.addEventListener("click", () => {
+
+    if (!isRunning) {
+
         startTime = Date.now();
-        timerInterval = 
-    setInterval(updateDisplay, 10);
+
+        timerInterval = setInterval(updateDisplay, 10);
+
         isRunning = true;
+
         startPauseBtn.textContent = "Pause";
-    }
-    else{
+
+    } else {
+
         clearInterval(timerInterval);
+
         elapsedTime += Date.now() - startTime;
+
         isRunning = false;
+
         startPauseBtn.textContent = "Resume";
     }
 });
 
 resetBtn.addEventListener("click", () => {
+
     clearInterval(timerInterval);
 
     startTime = 0;
@@ -53,14 +62,15 @@ resetBtn.addEventListener("click", () => {
     lapList.innerHTML = "";
 });
 
-lapBtn.addEventListener("click",() => {
-    if(!isRunning) return;
+lapBtn.addEventListener("click", () => {
+
+    if (!isRunning) return;
 
     const lap = document.createElement("div");
     lap.classList.add("lap-item");
 
-    lap.textContent=
-    `Lap ${lapList.children.length+1} - ${display.textContent}`;
+    lap.textContent =
+        `Lap ${lapList.children.length + 1} - ${display.textContent}`;
 
     lapList.prepend(lap);
 });
